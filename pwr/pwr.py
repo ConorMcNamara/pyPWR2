@@ -196,7 +196,7 @@ def pwr_2way(
     if print_pretty:
         str_print = (
                 "\t"
-                + "Balanced two-way analysis of variance power calculation"
+                + "Balanced one-way analysis of variance sample size adjustment "
                 + "\n" * 2
                 + "\t" * 4
                 + f"a = {a}"
@@ -246,6 +246,7 @@ def ss_2way(
         sigma_a: float = None,
         sigma_b: float = None,
         B: int = 100,
+        print_pretty: bool = True,
 ) -> int:
     """Calculate sample size for two-way ANOVA models.
 
@@ -273,6 +274,8 @@ def ss_2way(
         Standard deviation, i.e. square root of variance in Factor B
     B: int, default=100
         Iteration times, default number is 100
+    print_pretty: bool, default=True
+        Whether we want our results printed or not
 
     Returns
     -------
@@ -282,4 +285,28 @@ def ss_2way(
     ss_a = _ss_fa(a, b, alpha, beta, f_a, delta_a, sigma_a, B)
     ss_b = _ss_fb(a, b, alpha, beta, f_b, delta_b, sigma_b, B)
     ss = max(ss_a, ss_b)
+    if print_pretty:
+        str_print = (
+                "\t"
+                + "Balanced two-way analysis of variance sample size adjustment "
+                + "\n" * 2
+                + "\t" * 4
+                + f"a = {a}"
+                + "\n"
+                + "\t" * 4
+                + f"b = {b}"
+                + "\n"
+                + "\t"
+                + " " * 4
+                + f"sig_level = {alpha}"
+                + "\n"
+                + "\t" * 3
+                + f"power = {round(power, 4)}"
+                + "\n"
+                + "\t" * 4
+                + f"n = {ss}"
+                + "\n" * 2
+                + f"NOTE: NOTE: n is number in each group, total sample = {ss * a * b}"
+        )
+        print(str_print)
     return ss
