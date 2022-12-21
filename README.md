@@ -1,4 +1,4 @@
-# pwr2
+# pyPWR2
 
 A Python implementation of the [pwr2](https://cran.r-project.org/web/packages/pwr2/index.html) R package; a library
 for calculating the power, sample size and minimum detectable effect of 1 and 2-way ANOVA tests.
