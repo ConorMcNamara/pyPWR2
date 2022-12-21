@@ -11,7 +11,7 @@ To quote the documentation
 ## Quick Example
 
 ```
-from pw2.pwr import pwr_1way
+from pwr2.pwr import pwr_1way
 results = pwr_1way(5, 15, 0.05, None, 1.5, 1)
 print(round(results["power"]), 4)
 0.9074
