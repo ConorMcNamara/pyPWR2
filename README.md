@@ -1,14 +1,12 @@
 # pwr2
 
 A Python implementation of the [pwr2](https://cran.r-project.org/web/packages/pwr2/index.html) R package; a library
-for calculating the power, sample size and minimum detectable effect of various Statistical Tests and Experiments.
+for calculating the power, sample size and minimum detectable effect of 1 and 2-way ANOVA tests.
 
 To quote the documentation
 
 > User friendly functions for power and sample size analysis at one-way and two-way ANOVA settings take either effect
-> size or delta and sigma as arguments. They are designed for both one-way and two-way ANOVA settings. In addition, a
-> function for plotting power curves is available for power comparison, which can be easily visualized by statisticians
-> and clinical researchers.
+> size or delta and sigma as arguments. They are designed for both one-way and two-way ANOVA settings. 
 
 ## Quick Example
 
