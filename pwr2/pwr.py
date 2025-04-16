@@ -12,19 +12,19 @@ def pwr_1way(
 
     Parameters
     ----------
-    k: int
+    k : int
         Number of groups
-    n: int
+    n : int
         Sample size per group
-    alpha: float
+    alpha : float
         Significant level (Type I error probability)
-    f: float
+    f : float
         Effect size
-    delta: float, default=0.1
+    delta : float, default=0.1
         The smallest difference among k groups
-    sigma: float, default=0.1
+    sigma : float, default=0.1
         Standard deviation, i.e. square root of variance
-    print_pretty: bool, default=True
+    print_pretty : bool, default=True
         Whether we want the results printed or not
 
     Returns
@@ -81,21 +81,21 @@ def ss_1way(
 
     Parameters
     ----------
-    k: int
+    k : int
         Number of groups
-    alpha: float
+    alpha : float
         Significant level (Type I error probability)
-    power: float
+    power : float
         Type II error probability (Power=1-beta)
-    f: float
+    f : float
         Effect size
-    delta: float, default=0.1
+    delta : float, default=0.1
         The smallest difference among k groups
-    sigma: float, default=0.1
+    sigma : float, default=0.1
         Standard deviation, i.e. square root of variance
-    B: int, default=100
+    B : int, default=100
         Iteration times, default number is 100
-    print_pretty: bool, default=True
+    print_pretty : bool, default=True
         Whether we want our results printed or not
 
     Returns
@@ -161,29 +161,29 @@ def pwr_2way(
 
     Parameters
     ----------
-    a: int
+    a : int
         Number of groups in Factor A
-    b: int
+    b : int
         Number of groups in Factor B
-    alpha: float
+    alpha : float
         Significant level (Type I error probability)
-    size_a: int
+    size_a : int
         Sample size per group in Factor A
-    size_b: int
+    size_b : int
         Sample size per group in Factor B
-    f_a: float
+    f_a : float
         Effect size of Factor A
-    f_b: float
+    f_b : float
         Effect size of Factor B
-    delta_a: float, default=0.1
+    delta_a : float, default=0.1
         The smallest difference among a groups in Factor A
-    delta_b: float, default=0.1
+    delta_b : float, default=0.1
         The smallest difference among b groups in Factor B
-    sigma_a: float, default=0.1
+    sigma_a : float, default=0.1
         Standard deviation, i.e. square root of variance in Factor A
-    sigma_b: float, default=0.1
+    sigma_b : float, default=0.1
         Standard deviation, i.e. square root of variance in Factor B
-    print_pretty: bool, default=True
+    print_pretty : bool, default=True
         Whether we want our results printed or not
 
     Returns
@@ -252,29 +252,29 @@ def ss_2way(
 
     Parameters
     ----------
-    a: int
+    a : int
         Number of groups in Factor A
-    b: int
+    b : int
         Number of groups in Factor B
-    alpha: float
+    alpha : float
         Significant level (Type I error probability)
-    power: float
+    power : float
         Type II error probability (Power=1-beta)
-    f_a: float
+    f_a : float
         Effect size of Factor A
-    f_b: float
+    f_b : float
         Effect size of Factor B
-    delta_a: float, default=0.1
+    delta_a : float, default=0.1
         The smallest difference among a groups in Factor A
-    delta_b: float, default=0.1
+    delta_b : float, default=0.1
         The smallest difference among b groups in Factor B
-    sigma_a: float, default=0.1
+    sigma_a : float, default=0.1
         Standard deviation, i.e. square root of variance in Factor A
-    sigma_b: float, default=0.1
+    sigma_b : float, default=0.1
         Standard deviation, i.e. square root of variance in Factor B
-    B: int, default=100
+    B : int, default=100
         Iteration times, default number is 100
-    print_pretty: bool, default=True
+    print_pretty : bool, default=True
         Whether we want our results printed or not
 
     Returns
