@@ -2,7 +2,7 @@ from math import sqrt, pow
 
 from scipy.stats import f as f_dist, ncf
 
-from pwr.utils import _pwr_fb, _pwr_fA, _ss_fa, _ss_fb
+from pwr2.utils import _pwr_fb, _pwr_fA, _ss_fa, _ss_fb
 
 
 def pwr_1way(
