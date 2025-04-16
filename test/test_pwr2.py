@@ -1,6 +1,6 @@
 import pytest
 
-from pwr.pwr import pwr_1way, pwr_2way, ss_1way, ss_2way
+from pwr2.pwr import pwr_1way, pwr_2way, ss_1way, ss_2way
 
 
 class TestPwr2:

@@ -4,7 +4,7 @@ __version__ = "1.0.0"
 
 from typing import List
 
-from pwr import pwr, utils
+from pwr2 import pwr, utils
 
 __all__: List[str] = [
     "pwr",
