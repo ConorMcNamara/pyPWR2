@@ -18,7 +18,7 @@ requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-pythonpath = ["pwr", '.']
+pythonpath = ["pwr2", '.']
 
 [tool.ruff]
 line-length = 120
