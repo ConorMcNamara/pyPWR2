@@ -59,3 +59,7 @@ class TestPwr2:
     )
     def test_pwr2_ss2way(self, a, b, alpha, power, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, B, expected) -> None:
         assert ss_2way(a, b, alpha, power, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, B) == expected
+
+
+if __name__ == "__main__":
+    pytest.main()

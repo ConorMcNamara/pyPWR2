@@ -1,0 +1,31 @@
+[project]
+name = "pypwr2"
+version = "1.0.0"
+description = "A Python implementation of the PWR2 package in R"
+authors = [
+    {name = "ConorMcNamara",email = "conor.s.mcnamara@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "scipy (>=1.15.2,<2.0.0)",
+    "pytest (>=8.3.5,<9.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = ["pwr", '.']
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

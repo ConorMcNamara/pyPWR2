@@ -2,11 +2,11 @@ from math import sqrt, pow
 
 from scipy.stats import f as f_dist, ncf
 
-from utils import _pwr_fb, _pwr_fA, _ss_fa, _ss_fb
+from pwr.utils import _pwr_fb, _pwr_fA, _ss_fa, _ss_fb
 
 
 def pwr_1way(
-        k: int, n: int, alpha: float, f: float, delta: float = None, sigma: float = None, print_pretty: bool = True
+        k: int, n: int, alpha: float, f: float, delta: float = 0.1, sigma: float = 0.1, print_pretty: bool = True
 ) -> float:
     """Calculate power for one-way ANOVA models.
 
@@ -20,9 +20,9 @@ def pwr_1way(
         Significant level (Type I error probability)
     f: float
         Effect size
-    delta: float, default=None
+    delta: float, default=0.1
         The smallest difference among k groups
-    sigma: float, default=None
+    sigma: float, default=0.1
         Standard deviation, i.e. square root of variance
     print_pretty: bool, default=True
         Whether we want the results printed or not
@@ -72,8 +72,8 @@ def ss_1way(
         alpha: float,
         power: float,
         f: float,
-        delta: float = None,
-        sigma: float = None,
+        delta: float = 0.1,
+        sigma: float = 0.1,
         B: int = 100,
         print_pretty: bool = True,
 ) -> int:
@@ -89,9 +89,9 @@ def ss_1way(
         Type II error probability (Power=1-beta)
     f: float
         Effect size
-    delta: float, default=None
+    delta: float, default=0.1
         The smallest difference among k groups
-    sigma: float, default=None
+    sigma: float, default=0.1
         Standard deviation, i.e. square root of variance
     B: int, default=100
         Iteration times, default number is 100
@@ -151,10 +151,10 @@ def pwr_2way(
         size_b: float,
         f_a: float,
         f_b: float,
-        delta_a: float = None,
-        delta_b: float = None,
-        sigma_a: float = None,
-        sigma_b: float = None,
+        delta_a: float = 0.1,
+        delta_b: float = 0.1,
+        sigma_a: float = 0.1,
+        sigma_b: float = 0.1,
         print_pretty: bool = True
 ) -> float:
     """Calculate power for two-way ANOVA models.
@@ -175,13 +175,13 @@ def pwr_2way(
         Effect size of Factor A
     f_b: float
         Effect size of Factor B
-    delta_a: float, default=None
+    delta_a: float, default=0.1
         The smallest difference among a groups in Factor A
-    delta_b: float, default=None
+    delta_b: float, default=0.1
         The smallest difference among b groups in Factor B
-    sigma_a: float, default=None
+    sigma_a: float, default=0.1
         Standard deviation, i.e. square root of variance in Factor A
-    sigma_b: float, default=None
+    sigma_b: float, default=0.1
         Standard deviation, i.e. square root of variance in Factor B
     print_pretty: bool, default=True
         Whether we want our results printed or not
@@ -241,10 +241,10 @@ def ss_2way(
         power: float,
         f_a: float,
         f_b: float,
-        delta_a: float = None,
-        delta_b: float = None,
-        sigma_a: float = None,
-        sigma_b: float = None,
+        delta_a: float = 0.1,
+        delta_b: float = 0.1,
+        sigma_a: float = 0.1,
+        sigma_b: float = 0.1,
         B: int = 100,
         print_pretty: bool = True,
 ) -> int:
@@ -264,13 +264,13 @@ def ss_2way(
         Effect size of Factor A
     f_b: float
         Effect size of Factor B
-    delta_a: float, default=None
+    delta_a: float, default=0.1
         The smallest difference among a groups in Factor A
-    delta_b: float, default=None
+    delta_b: float, default=0.1
         The smallest difference among b groups in Factor B
-    sigma_a: float, default=None
+    sigma_a: float, default=0.1
         Standard deviation, i.e. square root of variance in Factor A
-    sigma_b: float, default=None
+    sigma_b: float, default=0.1
         Standard deviation, i.e. square root of variance in Factor B
     B: int, default=100
         Iteration times, default number is 100
