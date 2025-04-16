@@ -4,13 +4,11 @@ __version__ = "1.0.0"
 
 from typing import List
 
-from pwr.pwr import pwr_1way, ss_1way, pwr_2way, ss_2way
+from pwr import pwr, utils
 
 __all__: List[str] = [
-    "pwr_1way",
-    "ss_1way",
-    "pwr_2way",
-    "ss_2way"
+    "pwr",
+    "utils"
 ]
 
 
