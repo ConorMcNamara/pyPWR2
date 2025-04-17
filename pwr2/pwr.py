@@ -6,7 +6,7 @@ from pwr2.utils import _pwr_fb, _pwr_fA, _ss_fa, _ss_fb
 
 
 def pwr_1way(
-        k: int, n: int, alpha: float, f: float, delta: float = 0.1, sigma: float = 0.1, print_pretty: bool = True
+    k: int, n: int, alpha: float, f: float, delta: float = 0.1, sigma: float = 0.1, print_pretty: bool = True
 ) -> float:
     """Calculate power for one-way ANOVA models.
 
@@ -38,44 +38,44 @@ def pwr_1way(
     pwr = ncf.sf(q, k - 1, (n - 1) * k, lamda)
     if print_pretty:
         str_print = (
-                "\t"
-                + "Balanced one-way analysis of variance power calculation"
-                + "\n" * 2
-                + "\t" * 4
-                + f"k = {k}"
-                + "\n"
-                + "\t" * 4
-                + f"n = {n}"
-                + "\n"
-                + "\t"
-                + " " * 2
-                + f"effect_size = {round(f, 4)}"
-                + "\n"
-                + "\t"
-                + " " * 4
-                + f"sig_level = {alpha}"
-                + "\n"
-                + "\t"
-                + " " * 8
-                + f"power = {round(pwr, 4)}"
-                + "\n" * 2
-                + "NOTE: n is number in each group"
-                + "\n"
-                + f"Total sample = {n * k}"
+            "\t"
+            + "Balanced one-way analysis of variance power calculation"
+            + "\n" * 2
+            + "\t" * 4
+            + f"k = {k}"
+            + "\n"
+            + "\t" * 4
+            + f"n = {n}"
+            + "\n"
+            + "\t"
+            + " " * 2
+            + f"effect_size = {round(f, 4)}"
+            + "\n"
+            + "\t"
+            + " " * 4
+            + f"sig_level = {alpha}"
+            + "\n"
+            + "\t"
+            + " " * 8
+            + f"power = {round(pwr, 4)}"
+            + "\n" * 2
+            + "NOTE: n is number in each group"
+            + "\n"
+            + f"Total sample = {n * k}"
         )
         print(str_print)
     return pwr
 
 
 def ss_1way(
-        k: int,
-        alpha: float,
-        power: float,
-        f: float,
-        delta: float = 0.1,
-        sigma: float = 0.1,
-        B: int = 100,
-        print_pretty: bool = True,
+    k: int,
+    alpha: float,
+    power: float,
+    f: float,
+    delta: float = 0.1,
+    sigma: float = 0.1,
+    B: int = 100,
+    print_pretty: bool = True,
 ) -> int:
     """Calculate sample size for one-way ANOVA models.
 
@@ -118,44 +118,44 @@ def ss_1way(
     ss = len(power_list) + 1
     if print_pretty:
         str_print = (
-                "\t"
-                + "Balanced one-way analysis of variance sample size adjustment"
-                + "\n" * 2
-                + "\t" * 4
-                + f"k = {k}"
-                + "\n"
-                + "\t"
-                + " " * 4
-                + f"sig_level = {alpha}"
-                + "\n"
-                + "\t"
-                + " " * 8
-                + f"power = {power}"
-                + "\n"
-                + "\t" * 4
-                + f"n = {ss}"
-                + "\n" * 2
-                + "NOTE: n is number in each group"
-                + "\n"
-                + f"Total sample = {ss * k}"
+            "\t"
+            + "Balanced one-way analysis of variance sample size adjustment"
+            + "\n" * 2
+            + "\t" * 4
+            + f"k = {k}"
+            + "\n"
+            + "\t"
+            + " " * 4
+            + f"sig_level = {alpha}"
+            + "\n"
+            + "\t"
+            + " " * 8
+            + f"power = {power}"
+            + "\n"
+            + "\t" * 4
+            + f"n = {ss}"
+            + "\n" * 2
+            + "NOTE: n is number in each group"
+            + "\n"
+            + f"Total sample = {ss * k}"
         )
         print(str_print)
     return ss
 
 
 def pwr_2way(
-        a: float,
-        b: float,
-        alpha: float,
-        size_a: float,
-        size_b: float,
-        f_a: float,
-        f_b: float,
-        delta_a: float = 0.1,
-        delta_b: float = 0.1,
-        sigma_a: float = 0.1,
-        sigma_b: float = 0.1,
-        print_pretty: bool = True
+    a: float,
+    b: float,
+    alpha: float,
+    size_a: float,
+    size_b: float,
+    f_a: float,
+    f_b: float,
+    delta_a: float = 0.1,
+    delta_b: float = 0.1,
+    sigma_a: float = 0.1,
+    sigma_b: float = 0.1,
+    print_pretty: bool = True,
 ) -> float:
     """Calculate power for two-way ANOVA models.
 
@@ -195,58 +195,58 @@ def pwr_2way(
     pwr = min(pwr_a, pwr_b)
     if print_pretty:
         str_print = (
-                "\t"
-                + "Balanced one-way analysis of variance sample size adjustment "
-                + "\n" * 2
-                + "\t" * 4
-                + f"a = {a}"
-                + "\n"
-                + "\t" * 4
-                + f"b = {b}"
-                + "\n"
-                + "\t" * 3
-                + " " * 2
-                + f"n_A = {size_a}"
-                + "\n"
-                + "\t" * 3
-                + " " * 2
-                + f"n_B = {size_b}"
-                + "\n"
-                + "\t"
-                + " " * 4
-                + f"sig_level = {alpha}"
-                + "\n"
-                + "\t" * 2
-                + " " * 2
-                + f"power_a = {round(pwr_a, 4)}"
-                + "\n"
-                + "\t" * 2
-                + " " * 2
-                + f"power_b = {round(pwr_b, 4)}"
-                + "\n"
-                + "\t"
-                + " " * 8
-                + f"power = {round(pwr, 4)}"
-                + "\n" * 2
-                + "NOTE: power is the minimum power among two factors"
+            "\t"
+            + "Balanced one-way analysis of variance sample size adjustment "
+            + "\n" * 2
+            + "\t" * 4
+            + f"a = {a}"
+            + "\n"
+            + "\t" * 4
+            + f"b = {b}"
+            + "\n"
+            + "\t" * 3
+            + " " * 2
+            + f"n_A = {size_a}"
+            + "\n"
+            + "\t" * 3
+            + " " * 2
+            + f"n_B = {size_b}"
+            + "\n"
+            + "\t"
+            + " " * 4
+            + f"sig_level = {alpha}"
+            + "\n"
+            + "\t" * 2
+            + " " * 2
+            + f"power_a = {round(pwr_a, 4)}"
+            + "\n"
+            + "\t" * 2
+            + " " * 2
+            + f"power_b = {round(pwr_b, 4)}"
+            + "\n"
+            + "\t"
+            + " " * 8
+            + f"power = {round(pwr, 4)}"
+            + "\n" * 2
+            + "NOTE: power is the minimum power among two factors"
         )
         print(str_print)
     return pwr
 
 
 def ss_2way(
-        a: float,
-        b: float,
-        alpha: float,
-        power: float,
-        f_a: float,
-        f_b: float,
-        delta_a: float = 0.1,
-        delta_b: float = 0.1,
-        sigma_a: float = 0.1,
-        sigma_b: float = 0.1,
-        B: int = 100,
-        print_pretty: bool = True,
+    a: float,
+    b: float,
+    alpha: float,
+    power: float,
+    f_a: float,
+    f_b: float,
+    delta_a: float = 0.1,
+    delta_b: float = 0.1,
+    sigma_a: float = 0.1,
+    sigma_b: float = 0.1,
+    B: int = 100,
+    print_pretty: bool = True,
 ) -> int:
     """Calculate sample size for two-way ANOVA models.
 
@@ -287,26 +287,26 @@ def ss_2way(
     ss = max(ss_a, ss_b)
     if print_pretty:
         str_print = (
-                "\t"
-                + "Balanced two-way analysis of variance sample size adjustment "
-                + "\n" * 2
-                + "\t" * 4
-                + f"a = {a}"
-                + "\n"
-                + "\t" * 4
-                + f"b = {b}"
-                + "\n"
-                + "\t"
-                + " " * 4
-                + f"sig_level = {alpha}"
-                + "\n"
-                + "\t" * 3
-                + f"power = {round(power, 4)}"
-                + "\n"
-                + "\t" * 4
-                + f"n = {ss}"
-                + "\n" * 2
-                + f"NOTE: NOTE: n is number in each group, total sample = {ss * a * b}"
+            "\t"
+            + "Balanced two-way analysis of variance sample size adjustment "
+            + "\n" * 2
+            + "\t" * 4
+            + f"a = {a}"
+            + "\n"
+            + "\t" * 4
+            + f"b = {b}"
+            + "\n"
+            + "\t"
+            + " " * 4
+            + f"sig_level = {alpha}"
+            + "\n"
+            + "\t" * 3
+            + f"power = {round(power, 4)}"
+            + "\n"
+            + "\t" * 4
+            + f"n = {ss}"
+            + "\n" * 2
+            + f"NOTE: NOTE: n is number in each group, total sample = {ss * a * b}"
         )
         print(str_print)
     return ss

@@ -4,13 +4,13 @@ from scipy.stats import f as f_dist, ncf
 
 
 def _pwr_fA(
-        a: float,
-        b: float,
-        alpha: float,
-        size_a: float,
-        f_a: float,
-        delta_a: float,
-        sigma_a: float,
+    a: float,
+    b: float,
+    alpha: float,
+    size_a: float,
+    f_a: float,
+    delta_a: float,
+    sigma_a: float,
 ) -> float:
     N = size_a * a * b
     if f_a is None:
@@ -22,13 +22,13 @@ def _pwr_fA(
 
 
 def _pwr_fb(
-        a: float,
-        b: float,
-        alpha: float,
-        size_b: float,
-        f_b: float,
-        delta_b: float,
-        sigma_b: float,
+    a: float,
+    b: float,
+    alpha: float,
+    size_b: float,
+    f_b: float,
+    delta_b: float,
+    sigma_b: float,
 ) -> float:
     N = size_b * a * b
     if f_b is None:
@@ -40,14 +40,14 @@ def _pwr_fb(
 
 
 def _ss_fa(
-        a: float,
-        b: float,
-        alpha: float,
-        beta: float,
-        f_a: float,
-        delta_a: float,
-        sigma_a: float,
-        B: int,
+    a: float,
+    b: float,
+    alpha: float,
+    beta: float,
+    f_a: float,
+    delta_a: float,
+    sigma_a: float,
+    B: int,
 ) -> int:
     if f_a is None:
         f_a = sqrt(((1 / a) * pow(delta_a / 2, 2) * 2) / pow(sigma_a, 2))
@@ -66,14 +66,14 @@ def _ss_fa(
 
 
 def _ss_fb(
-        a: float,
-        b: float,
-        alpha: float,
-        beta: float,
-        f_b: float,
-        delta_b: float,
-        sigma_b: float,
-        B: int,
+    a: float,
+    b: float,
+    alpha: float,
+    beta: float,
+    f_b: float,
+    delta_b: float,
+    sigma_b: float,
+    B: int,
 ) -> int:
     if f_b is None:
         f_b = sqrt(((1 / a) * pow(delta_b / 2, 2) * 2) / pow(sigma_b, 2))

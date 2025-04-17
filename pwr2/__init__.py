@@ -6,10 +6,7 @@ from typing import List
 
 from pwr2 import pwr, utils
 
-__all__: List[str] = [
-    "pwr",
-    "utils"
-]
+__all__: List[str] = ["pwr", "utils"]
 
 
 def __dir__() -> List[str]:
