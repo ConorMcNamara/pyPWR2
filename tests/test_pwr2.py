@@ -12,7 +12,7 @@ class TestPwr2:
         ],
     )
     def test_pwr2_pwr1way(self, k, n, alpha, f, delta, sigma, expected) -> None:
-        assert pwr_1way(k, n, alpha, f, delta, sigma) == pytest.approx(expected)
+        assert pwr_1way(k, n, alpha, f, delta, sigma, print_pretty=False) == pytest.approx(expected)
 
     @pytest.mark.parametrize(
         "a, b, alpha, size_a, size_b, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, expected",
@@ -36,16 +36,16 @@ class TestPwr2:
         sigma_b,
         expected,
     ) -> None:
-        assert pwr_2way(a, b, alpha, size_a, size_b, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b) == pytest.approx(
-            expected
-        )
+        assert pwr_2way(
+            a, b, alpha, size_a, size_b, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, print_pretty=False
+        ) == pytest.approx(expected)
 
     @pytest.mark.parametrize(
         "k, alpha, power, f, delta, sigma, B, expected",
         [(5, 0.05, 0.9, 1.5, None, None, 100, 3), (5, 0.05, 0.9, None, 1.5, 1, 100, 15)],
     )
     def test_pwr2_ss1way(self, k, alpha, power, f, delta, sigma, B, expected) -> None:
-        assert ss_1way(k, alpha, power, f, delta, sigma, B) == expected
+        assert ss_1way(k, alpha, power, f, delta, sigma, B, print_pretty=False) == expected
 
     @pytest.mark.parametrize(
         "a, b, alpha, power, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, B, expected",
@@ -55,7 +55,9 @@ class TestPwr2:
         ],
     )
     def test_pwr2_ss2way(self, a, b, alpha, power, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, B, expected) -> None:
-        assert ss_2way(a, b, alpha, power, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, B) == expected
+        assert (
+            ss_2way(a, b, alpha, power, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, B, print_pretty=False) == expected
+        )
 
 
 if __name__ == "__main__":

@@ -1,14 +1,15 @@
-from math import sqrt, pow
+from math import pow, sqrt
 
-from scipy.stats import f as f_dist, ncf
+from scipy.stats import f as f_dist
+from scipy.stats import ncf
 
 
 def _pwr_fA(
-    a: float,
-    b: float,
+    a: int,
+    b: int,
     alpha: float,
-    size_a: float,
-    f_a: float,
+    size_a: int,
+    f_a: float | None,
     delta_a: float,
     sigma_a: float,
 ) -> float:
@@ -18,15 +19,15 @@ def _pwr_fA(
     lamda = N * pow(f_a, 2)
     q = f_dist.isf(alpha, a - 1, N - a - b + 1)
     power = ncf.sf(q, a - 1, N - a - b + 1, lamda)
-    return power
+    return float(power)
 
 
 def _pwr_fb(
-    a: float,
-    b: float,
+    a: int,
+    b: int,
     alpha: float,
-    size_b: float,
-    f_b: float,
+    size_b: int,
+    f_b: float | None,
     delta_b: float,
     sigma_b: float,
 ) -> float:
@@ -36,15 +37,15 @@ def _pwr_fb(
     lamda = N * pow(f_b, 2)
     q = f_dist.isf(alpha, a - 1, N - a - b + 1)
     power = ncf.sf(q, a - 1, N - a - b + 1, lamda)
-    return power
+    return float(power)
 
 
 def _ss_fa(
-    a: float,
-    b: float,
+    a: int,
+    b: int,
     alpha: float,
     beta: float,
-    f_a: float,
+    f_a: float | None,
     delta_a: float,
     sigma_a: float,
     B: int,
@@ -66,11 +67,11 @@ def _ss_fa(
 
 
 def _ss_fb(
-    a: float,
-    b: float,
+    a: int,
+    b: int,
     alpha: float,
     beta: float,
-    f_b: float,
+    f_b: float | None,
     delta_b: float,
     sigma_b: float,
     B: int,

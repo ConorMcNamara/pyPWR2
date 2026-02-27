@@ -1,12 +1,19 @@
-from math import sqrt, pow
+from math import pow, sqrt
 
-from scipy.stats import f as f_dist, ncf
+from scipy.stats import f as f_dist
+from scipy.stats import ncf
 
-from pwr2.utils import _pwr_fb, _pwr_fA, _ss_fa, _ss_fb
+from pwr2.utils import _pwr_fA, _pwr_fb, _ss_fa, _ss_fb
 
 
 def pwr_1way(
-    k: int, n: int, alpha: float, f: float, delta: float = 0.1, sigma: float = 0.1, print_pretty: bool = True
+    k: int,
+    n: int,
+    alpha: float,
+    f: float | None,
+    delta: float = 0.1,
+    sigma: float = 0.1,
+    print_pretty: bool = True,
 ) -> float:
     """Calculate power for one-way ANOVA models.
 
@@ -35,7 +42,7 @@ def pwr_1way(
         f = sqrt(((1 / k) * pow(delta / 2, 2) * 2) / pow(sigma, 2))
     lamda = n * k * pow(f, 2)
     q = f_dist.isf(alpha, k - 1, (n - 1) * k)
-    pwr = ncf.sf(q, k - 1, (n - 1) * k, lamda)
+    pwr: float = ncf.sf(q, k - 1, (n - 1) * k, lamda)
     if print_pretty:
         str_print = (
             "\t"
@@ -71,7 +78,7 @@ def ss_1way(
     k: int,
     alpha: float,
     power: float,
-    f: float,
+    f: float | None,
     delta: float = 0.1,
     sigma: float = 0.1,
     B: int = 100,
@@ -144,13 +151,13 @@ def ss_1way(
 
 
 def pwr_2way(
-    a: float,
-    b: float,
+    a: int,
+    b: int,
     alpha: float,
-    size_a: float,
-    size_b: float,
-    f_a: float,
-    f_b: float,
+    size_a: int,
+    size_b: int,
+    f_a: float | None,
+    f_b: float | None,
     delta_a: float = 0.1,
     delta_b: float = 0.1,
     sigma_a: float = 0.1,
@@ -196,7 +203,7 @@ def pwr_2way(
     if print_pretty:
         str_print = (
             "\t"
-            + "Balanced one-way analysis of variance sample size adjustment "
+            + "Balanced two-way analysis of variance power calculation"
             + "\n" * 2
             + "\t" * 4
             + f"a = {a}"
@@ -235,12 +242,12 @@ def pwr_2way(
 
 
 def ss_2way(
-    a: float,
-    b: float,
+    a: int,
+    b: int,
     alpha: float,
     power: float,
-    f_a: float,
-    f_b: float,
+    f_a: float | None,
+    f_b: float | None,
     delta_a: float = 0.1,
     delta_b: float = 0.1,
     sigma_a: float = 0.1,
@@ -306,7 +313,7 @@ def ss_2way(
             + "\t" * 4
             + f"n = {ss}"
             + "\n" * 2
-            + f"NOTE: NOTE: n is number in each group, total sample = {ss * a * b}"
+            + f"NOTE: n is number in each group, total sample = {ss * a * b}"
         )
         print(str_print)
     return ss
