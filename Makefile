@@ -8,7 +8,7 @@ PYTHON := python3
 PIP := $(PYTHON) -m pip
 PYTEST := $(PYTHON) -m pytest
 RUFF := ruff
-MYPY := mypy
+ZUBAN := zuban
 PRE_COMMIT := pre-commit
 
 help: ## Show this help message
@@ -53,8 +53,8 @@ format: ## Format code with ruff
 format-check: ## Check code formatting without changes
 	$(RUFF) format --check .
 
-type-check: ## Run type checker (mypy)
-	$(MYPY) pwr2
+type-check: ## Run type checker (zuban)
+	$(ZUBAN) check pwr2
 
 check: lint format-check type-check ## Run all code quality checks
 
@@ -99,8 +99,9 @@ clean: ## Remove build artifacts and cache files
 	find . -type f -name '*.pyo' -delete
 	find . -type f -name '*.egg' -delete
 
-clean-all: clean ## Remove all generated files including mypy cache
+clean-all: clean ## Remove all generated files including zuban cache
 	rm -rf .mypy_cache/
+	rm -rf .zuban_cache/
 	rm -rf .tox/
 	rm -rf venv/
 	rm -rf env/

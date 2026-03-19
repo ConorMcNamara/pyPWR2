@@ -142,8 +142,9 @@ venv.bak/
 # mkdocs documentation
 /site
 
-# mypy
+# mypy / zuban
 .mypy_cache/
+.zuban_cache/
 .dmypy.json
 dmypy.json
 

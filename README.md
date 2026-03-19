@@ -93,7 +93,7 @@ pytest
 ruff check .
 
 # Run type checking
-mypy pwr2
+zuban check pwr2
 ```
 </details>
 

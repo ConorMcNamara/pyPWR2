@@ -58,7 +58,7 @@ This single command will install all development dependencies and set up pre-com
 This project uses modern Python tooling for code quality:
 
 - **Ruff**: For linting and formatting
-- **mypy**: For type checking
+- **zuban**: For type checking
 - **pytest**: For testing
 
 All of these are configured in `pyproject.toml`.
@@ -123,7 +123,7 @@ make type-check          # Run type checker
 ```bash
 ruff format .            # Format code with ruff
 ruff check .             # Run linter
-mypy pwr2                # Run type checker
+zuban check pwr2         # Run type checker
 ```
 
 Pre-commit hooks will automatically run these checks before each commit.
@@ -164,7 +164,7 @@ All code must include comprehensive type hints. The project uses:
    # Or manually:
    # pytest
    # ruff check .
-   # mypy pwr2
+   # zuban check pwr2
    ```
 
 6. **Commit your changes:**
