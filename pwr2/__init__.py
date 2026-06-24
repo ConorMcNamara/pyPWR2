@@ -1,4 +1,4 @@
-"""Performing power calculations for one and two-way ANOVA models"""
+"""Performing power calculations for one and two-way ANOVA models."""
 
 __version__ = "1.0.0"
 

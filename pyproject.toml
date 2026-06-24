@@ -112,6 +112,7 @@ select = [
     "C4",     # flake8-comprehensions
     "SIM",    # flake8-simplify
     "TCH",    # flake8-type-checking
+    "D",      # pydocstyle
     "RUF",    # Ruff-specific rules
 ]
 ignore = [
@@ -132,3 +133,6 @@ line-ending = "auto"
 
 [tool.ruff.lint.isort]
 known-first-party = ["pwr2"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
