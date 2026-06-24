@@ -1,3 +1,5 @@
+"""Helper utilities for ANOVA power and sample size calculations."""
+
 from math import pow, sqrt
 
 from scipy.stats import f as f_dist

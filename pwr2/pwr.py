@@ -1,3 +1,5 @@
+"""Power and sample size calculations for one- and two-way ANOVA models."""
+
 from math import pow, sqrt
 
 from scipy.stats import f as f_dist
