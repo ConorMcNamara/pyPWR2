@@ -233,6 +233,9 @@ rsconnect/
 pyvenv.cfg
 pip-selfcheck.json
 
+# The [Ss]cripts rule above targets virtualenv layouts; keep our repo tooling dir tracked
+!/scripts/
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json

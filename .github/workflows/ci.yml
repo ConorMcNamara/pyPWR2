@@ -26,6 +26,9 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Check min-Python knobs match the lowest classifier
+        run: python scripts/check_python_versions.py
+
       - name: Resolve versions from pyproject.toml classifiers
         id: resolve
         run: |

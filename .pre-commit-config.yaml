@@ -28,3 +28,10 @@ repos:
         types: [python]
         pass_filenames: false
         args: [pwr2]
+
+      - id: check-python-versions
+        name: check python version knobs match lowest classifier
+        entry: python scripts/check_python_versions.py
+        language: system
+        files: ^pyproject\.toml$
+        pass_filenames: false
