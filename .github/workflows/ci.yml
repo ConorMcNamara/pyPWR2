@@ -7,9 +7,16 @@ on:
     branches: [main, master]
 
 jobs:
-  lint:
-    name: Lint and Format Check
+  # Single source of truth: the Python versions tested by CI are derived from
+  # the trove classifiers in pyproject.toml. To test a new Python version,
+  # add one line there (e.g. "Programming Language :: Python :: 3.15") and the
+  # matrix below updates automatically.
+  generate-matrix:
+    name: Resolve Python versions
     runs-on: ubuntu-latest
+    outputs:
+      versions: ${{ steps.resolve.outputs.versions }}
+      latest: ${{ steps.resolve.outputs.latest }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -18,6 +25,47 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+
+      - name: Check min-Python knobs match the lowest classifier
+        run: python scripts/check_python_versions.py
+
+      - name: Resolve versions from pyproject.toml classifiers
+        id: resolve
+        run: |
+          python - <<'PY'
+          import json, os, re, tomllib
+
+          with open("pyproject.toml", "rb") as f:
+              data = tomllib.load(f)
+
+          classifiers = data["project"].get("classifiers", [])
+          pattern = re.compile(r"Programming Language :: Python :: (\d+\.\d+)$")
+          versions = sorted(
+              {m.group(1) for c in classifiers if (m := pattern.match(c))},
+              key=lambda v: tuple(int(p) for p in v.split(".")),
+          )
+          if not versions:
+              raise SystemExit("No 'Programming Language :: Python :: X.Y' classifiers found in pyproject.toml")
+
+          print(f"Resolved Python versions: {versions}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"versions={json.dumps(versions)}\n")
+              out.write(f"latest={versions[-1]}\n")
+          PY
+
+  lint:
+    name: Lint and Format Check
+    runs-on: ubuntu-latest
+    needs: generate-matrix
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ needs.generate-matrix.outputs.latest }}
+          allow-prereleases: true
 
       - name: Cache dependencies
         uses: actions/cache@v4
@@ -44,14 +92,12 @@ jobs:
   test:
     name: Test Python ${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    needs: generate-matrix
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.13", "3.14"]
-        include:
-          - python-version: "3.14"
-            allow-prereleases: true
+        python-version: ${{ fromJson(needs.generate-matrix.outputs.versions) }}
 
     steps:
       - name: Checkout code
@@ -61,7 +107,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          allow-prereleases: ${{ matrix.allow-prereleases || false }}
+          # Safe to leave on for every version: setup-python only falls back to
+          # a prerelease when no GA release matches the exact x.y requested, so
+          # newly released versions (e.g. a future 3.15 beta) work without edits.
+          allow-prereleases: true
 
       - name: Cache dependencies
         uses: actions/cache@v4
@@ -80,7 +129,7 @@ jobs:
         run: pytest
 
       - name: Upload coverage to Codecov
-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == needs.generate-matrix.outputs.latest
         uses: codecov/codecov-action@v4
         with:
           file: ./coverage.xml
@@ -91,7 +140,7 @@ jobs:
   build:
     name: Build distribution
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [generate-matrix, lint, test]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -99,7 +148,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: ${{ needs.generate-matrix.outputs.latest }}
+          allow-prereleases: true
 
       - name: Install build dependencies
         run: |

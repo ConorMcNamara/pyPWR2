@@ -14,6 +14,8 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
+    # NOTE: The "3.X" lines below are the single source of truth for the CI test
+    # matrix (see .github/workflows/ci.yml). Add a line here to test a new version.
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Mathematics",
