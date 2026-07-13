@@ -29,11 +29,7 @@ def lowest_version(data: dict) -> tuple[int, int]:
     """Return the lowest ``(major, minor)`` from the Python trove classifiers."""
     classifiers = data["project"].get("classifiers", [])
     versions = sorted(
-        {
-            tuple(int(p) for p in m.group(1).split("."))
-            for c in classifiers
-            if (m := CLASSIFIER_RE.match(c))
-        }
+        {tuple(int(p) for p in m.group(1).split(".")) for c in classifiers if (m := CLASSIFIER_RE.match(c))}
     )
     if not versions:
         sys.exit("No 'Programming Language :: Python :: X.Y' classifiers found in pyproject.toml")
@@ -73,6 +69,7 @@ CHECKS = {
 
 
 def main(argv: list[str]) -> int:
+    """Assert (or ``--fix``) that the min-Python knobs match the lowest classifier."""
     fix = "--fix" in argv
 
     data = tomllib.loads(PYPROJECT.read_text(encoding="utf-8"))
@@ -95,10 +92,7 @@ def main(argv: list[str]) -> int:
             else:
                 print(f"fixed {key}: {current!r} -> {new_inner!r}")
         else:
-            problems.append(
-                f"{key} is {current!r} but the lowest classifier is {major}.{minor} "
-                f"(expected {want!r})"
-            )
+            problems.append(f"{key} is {current!r} but the lowest classifier is {major}.{minor} (expected {want!r})")
 
     if fix:
         PYPROJECT.write_text(text, encoding="utf-8")
