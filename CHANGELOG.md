@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Python version support**: Now requires Python 3.13+ (dropped support for 3.10, 3.11, 3.12)
 - Updated CI/CD to test Python 3.13 and 3.14 (pre-release)
 - Updated all tooling configurations to target Python 3.13
+- **Dependency management**: Switched from Poetry to [uv](https://docs.astral.sh/uv/); Makefile, CI, and CONTRIBUTING now drive `uv sync`/`uv run`/`uv build`
+- **Versioning**: The package version is now single-sourced from `pwr2/__init__.py` via hatchling dynamic versioning (`dynamic = ["version"]`)
 
 ### Added
 - Comprehensive type hints throughout the codebase
@@ -51,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Redundant `requirements.txt` file (dependencies now managed via pyproject.toml)
 - Old GitHub Actions workflows (linter.yml and python-package.yml)
+- `poetry.lock` (replaced by `uv.lock`)
 
 ## [1.0.0] - Initial Release
 
