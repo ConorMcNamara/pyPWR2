@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated all tooling configurations to target Python 3.13
 - **Dependency management**: Switched from Poetry to [uv](https://docs.astral.sh/uv/); Makefile, CI, and CONTRIBUTING now drive `uv sync`/`uv run`/`uv build`
 - **Versioning**: The package version is now single-sourced from `pwr2/__init__.py` via hatchling dynamic versioning (`dynamic = ["version"]`)
+- Renamed `test/` directory to `tests/` following standard convention
+- Enhanced pyproject.toml with complete metadata and classifiers
+- Switched from `poetry-core` to `hatchling` as build backend
+- Improved README example with correct syntax and clearer usage
+- Updated function signatures with proper Optional type hints
+- Consolidated GitHub Actions workflows into a single comprehensive CI workflow
 
 ### Added
 - Comprehensive type hints throughout the codebase
@@ -27,22 +33,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - And 25+ more commands for common tasks
 - Modern GitHub Actions CI/CD workflow with:
   - Linting (ruff)
-  - Type checking (mypy)
+  - Type checking (zuban)
   - Testing across Python 3.13-3.14 and multiple OS platforms
   - Code coverage reporting
   - Build artifact generation
 - Comprehensive pyproject.toml configuration with:
   - Complete project metadata
   - Development dependencies group
-  - Tool configurations for pytest, mypy, ruff, and coverage
-
-### Changed
-- Renamed `test/` directory to `tests/` following standard convention
-- Enhanced pyproject.toml with complete metadata and classifiers
-- Switched from `poetry-core` to `hatchling` as build backend
-- Improved README example with correct syntax and clearer usage
-- Updated function signatures with proper Optional type hints
-- Consolidated GitHub Actions workflows into a single comprehensive CI workflow
+  - Tool configurations for pytest, zuban, ruff, and coverage
 
 ### Fixed
 - Syntax error in README.md example code (incorrect comma placement in `round()` call)
