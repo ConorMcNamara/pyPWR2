@@ -1,6 +1,6 @@
 [project]
 name = "pypwr2"
-version = "1.0.0"
+dynamic = ["version"]
 description = "A Python implementation of the PWR2 package in R for power and sample size analysis"
 authors = [
     {name = "Conor McNamara", email = "conor.s.mcnamara@gmail.com"}
@@ -43,6 +43,9 @@ Issues = "https://github.com/ConorMcNamara/pyPWR2/issues"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "pwr2/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["pwr2"]

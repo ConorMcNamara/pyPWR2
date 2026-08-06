@@ -4,12 +4,12 @@
 .DEFAULT_GOAL := help
 
 # Variables
-PYTHON := python3
-PIP := $(PYTHON) -m pip
-PYTEST := $(PYTHON) -m pytest
-RUFF := ruff
-ZUBAN := zuban
-PRE_COMMIT := pre-commit
+UV := uv
+PYTHON := $(UV) run python
+PYTEST := $(UV) run pytest
+RUFF := $(UV) run ruff
+ZUBAN := $(UV) run zuban
+PRE_COMMIT := $(UV) run pre-commit
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -19,11 +19,11 @@ help: ## Show this help message
 
 ##@ Installation
 
-install: ## Install package in production mode
-	$(PIP) install .
+install: ## Install package into the project environment
+	$(UV) sync --no-dev
 
 install-dev: ## Install package with development dependencies
-	$(PIP) install -e ".[dev]"
+	$(UV) sync --extra dev
 
 ##@ Testing
 
@@ -72,16 +72,16 @@ pre-commit-update: ## Update pre-commit hooks to latest versions
 ##@ Build & Distribution
 
 build: clean ## Build distribution packages
-	$(PYTHON) -m build
+	$(UV) build
 
 build-check: build ## Build and check package with twine
-	$(PYTHON) -m twine check dist/*
+	$(UV) run --with twine twine check dist/*
 
 publish-test: build ## Publish to Test PyPI
-	$(PYTHON) -m twine upload --repository testpypi dist/*
+	$(UV) publish --publish-url https://test.pypi.org/legacy/
 
 publish: build ## Publish to PyPI (production)
-	$(PYTHON) -m twine upload dist/*
+	$(UV) publish
 
 ##@ Cleaning
 
@@ -128,13 +128,11 @@ docs-serve: ## Serve documentation locally (if using mkdocs)
 version: ## Show package version
 	@$(PYTHON) -c "from pwr2 import __version__; print(__version__)"
 
-deps-update: ## Update dependencies to latest compatible versions
-	$(PIP) install --upgrade pip setuptools wheel
-	$(PIP) list --outdated
+deps-update: ## Upgrade locked dependencies to latest compatible versions
+	$(UV) lock --upgrade
 
 deps-tree: ## Show dependency tree
-	$(PIP) install pipdeptree 2>/dev/null || true
-	pipdeptree
+	$(UV) tree
 
 info: ## Show project information
 	@echo "Project: pyPWR2"

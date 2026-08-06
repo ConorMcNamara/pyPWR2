@@ -9,7 +9,15 @@ Thank you for your interest in contributing to pyPWR2! This document provides gu
 
 ### Quick Setup (Using Make)
 
-This project includes a Makefile for convenient development tasks. Run `make help` to see all available commands.
+This project uses [uv](https://docs.astral.sh/uv/) for dependency and
+environment management, and includes a Makefile for convenient development
+tasks. Run `make help` to see all available commands.
+
+> [!NOTE]
+> If you don't already have uv installed, see the
+> [installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+> uv creates and manages the project virtual environment (`.venv`) for you, so
+> there's no need to create one manually.
 
 1. **Clone the repository:**
    ```bash
@@ -17,18 +25,13 @@ This project includes a Makefile for convenient development tasks. Run `make hel
    cd pyPWR2
    ```
 
-2. **Create a virtual environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Complete development setup:**
+2. **Complete development setup:**
    ```bash
    make dev-setup
    ```
 
-This single command will install all development dependencies and set up pre-commit hooks.
+This single command will install all development dependencies (into a uv-managed
+`.venv`) and set up pre-commit hooks.
 
 ### Manual Setup (Without Make)
 
@@ -38,20 +41,14 @@ This single command will install all development dependencies and set up pre-com
    cd pyPWR2
    ```
 
-2. **Create a virtual environment:**
+2. **Install the package with development dependencies:**
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   uv sync --extra dev
    ```
 
-3. **Install the package with development dependencies:**
+3. **Install pre-commit hooks:**
    ```bash
-   pip install -e ".[dev]"
-   ```
-
-4. **Install pre-commit hooks:**
-   ```bash
-   pre-commit install
+   uv run pre-commit install
    ```
 
 ## Development Workflow
@@ -107,9 +104,9 @@ make test-verbose        # Run tests with verbose output
 
 **Manual commands:**
 ```bash
-pytest                   # Run all tests
-pytest --cov=pwr2        # Run with coverage report
-pytest tests/test_pwr2.py  # Run specific test file
+uv run pytest                   # Run all tests
+uv run pytest --cov=pwr2        # Run with coverage report
+uv run pytest tests/test_pwr2.py  # Run specific test file
 ```
 
 ### Code Formatting and Linting
@@ -124,9 +121,9 @@ make type-check          # Run type checker
 
 **Manual commands:**
 ```bash
-ruff format .            # Format code with ruff
-ruff check .             # Run linter
-zuban check pwr2         # Run type checker
+uv run ruff format .            # Format code with ruff
+uv run ruff check .             # Run linter
+uv run zuban check pwr2         # Run type checker
 ```
 
 Pre-commit hooks will automatically run these checks before each commit.
@@ -165,9 +162,9 @@ All code must include comprehensive type hints. The project uses:
    ```bash
    make dev-check  # Recommended: runs all checks
    # Or manually:
-   # pytest
-   # ruff check .
-   # zuban check pwr2
+   # uv run pytest
+   # uv run ruff check .
+   # uv run zuban check pwr2
    ```
 
 6. **Commit your changes:**
