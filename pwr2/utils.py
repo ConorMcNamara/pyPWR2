@@ -35,10 +35,10 @@ def _pwr_fb(
 ) -> float:
     N = size_b * a * b
     if f_b is None:
-        f_b = sqrt(((1 / a) * pow(delta_b / 2, 2) * 2) / pow(sigma_b, 2))
+        f_b = sqrt(((1 / b) * pow(delta_b / 2, 2) * 2) / pow(sigma_b, 2))
     lamda = N * pow(f_b, 2)
-    q = f_dist.isf(alpha, a - 1, N - a - b + 1)
-    power = ncf.sf(q, a - 1, N - a - b + 1, lamda)
+    q = f_dist.isf(alpha, b - 1, N - a - b + 1)
+    power = ncf.sf(q, b - 1, N - a - b + 1, lamda)
     return float(power)
 
 
@@ -64,6 +64,8 @@ def _ss_fa(
         power.append(pwr)
         if power[i - 1] >= 1 - beta:
             break
+    else:
+        raise ValueError(f"Target power not achieved within B={B} iterations (max n={B + 1}). Increase B.")
     ss = len(power) + 1
     return ss
 
@@ -79,16 +81,18 @@ def _ss_fb(
     B: int,
 ) -> int:
     if f_b is None:
-        f_b = sqrt(((1 / a) * pow(delta_b / 2, 2) * 2) / pow(sigma_b, 2))
+        f_b = sqrt(((1 / b) * pow(delta_b / 2, 2) * 2) / pow(sigma_b, 2))
     power = []
     for i in range(1, B + 1):
         n_i = i + 1
         N = n_i * a * b
         lamda = N * pow(f_b, 2)
-        q = f_dist.isf(alpha, a - 1, N - a - b + 1)
-        pwr = ncf.sf(q, a - 1, N - a - b + 1, lamda)
+        q = f_dist.isf(alpha, b - 1, N - a - b + 1)
+        pwr = ncf.sf(q, b - 1, N - a - b + 1, lamda)
         power.append(pwr)
         if power[i - 1] >= 1 - beta:
             break
+    else:
+        raise ValueError(f"Target power not achieved within B={B} iterations (max n={B + 1}). Increase B.")
     ss = len(power) + 1
     return ss

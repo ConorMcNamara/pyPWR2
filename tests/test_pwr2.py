@@ -19,6 +19,8 @@ class TestPwr2:
         [
             (3, 3, 0.05, 4, 5, 0.8, 0.4, None, None, None, None, 0.6333554),
             (3, 3, 0.05, 4, 5, None, None, 4, 2, 2, 2, 0.6523857),
+            (2, 4, 0.05, 10, 10, 0.5, 0.3, None, None, None, None, 0.5782724182),
+            (2, 4, 0.05, 8, 8, None, None, 3, 2, 2, 2, 0.6219963876),
         ],
     )
     def test_pwr2_pwr2way(
@@ -52,12 +54,22 @@ class TestPwr2:
         [
             (3, 3, 0.05, 0.9, 0.4, 0.2, None, None, None, None, 100, 36),
             (3, 3, 0.05, 0.9, None, None, 1, 2, 2, 2, 100, 35),
+            (2, 4, 0.05, 0.8, 0.4, 0.3, None, None, None, None, 200, 16),
         ],
     )
     def test_pwr2_ss2way(self, a, b, alpha, power, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, B, expected) -> None:
         assert (
             ss_2way(a, b, alpha, power, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, B, print_pretty=False) == expected
         )
+
+
+    def test_ss1way_raises_on_exhausted_iterations(self) -> None:
+        with pytest.raises(ValueError, match="Target power .* not achieved"):
+            ss_1way(k=5, alpha=0.05, power=0.99, f=0.05, B=5, print_pretty=False)
+
+    def test_ss2way_raises_on_exhausted_iterations(self) -> None:
+        with pytest.raises(ValueError, match="not achieved"):
+            ss_2way(a=3, b=3, alpha=0.05, power=0.99, f_a=0.05, f_b=0.05, B=5, print_pretty=False)
 
 
 if __name__ == "__main__":

@@ -124,6 +124,8 @@ def ss_1way(
         power_list.append(pwr)
         if power_list[i - 1] >= (1 - beta):
             break
+    else:
+        raise ValueError(f"Target power {power} not achieved within B={B} iterations (max n={B + 1}). Increase B.")
     ss = len(power_list) + 1
     if print_pretty:
         str_print = (
