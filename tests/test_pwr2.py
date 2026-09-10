@@ -62,9 +62,8 @@ class TestPwr2:
             ss_2way(a, b, alpha, power, f_a, f_b, delta_a, delta_b, sigma_a, sigma_b, B, print_pretty=False) == expected
         )
 
-
     def test_ss1way_raises_on_exhausted_iterations(self) -> None:
-        with pytest.raises(ValueError, match="Target power .* not achieved"):
+        with pytest.raises(ValueError, match=r"Target power .* not achieved"):
             ss_1way(k=5, alpha=0.05, power=0.99, f=0.05, B=5, print_pretty=False)
 
     def test_ss2way_raises_on_exhausted_iterations(self) -> None:
