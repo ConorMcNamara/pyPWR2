@@ -1,6 +1,6 @@
 import pytest
 
-from pwr2.pwr import pwr_1way, pwr_2way, ss_1way, ss_2way
+from pwr2.pwr import pwr_1way, pwr_2way, pwr_plot, ss_1way, ss_2way
 
 
 class TestPwr2:
@@ -203,6 +203,50 @@ class TestInputValidation:
     def test_ss2way_validation(self, kwargs, match) -> None:
         with pytest.raises(ValueError, match=match):
             ss_2way(**kwargs, print_pretty=False)
+
+
+class TestPwrPlot:
+    go = pytest.importorskip("plotly.graph_objects")
+
+    def test_scalar_f_vector_n(self) -> None:
+        fig = pwr_plot(k=5, n=[5, 10, 15, 20], f=0.4)
+        assert isinstance(fig, self.go.Figure)
+        assert len(fig.data) == 1
+        assert list(fig.data[0].x) == [5, 10, 15, 20]
+
+    def test_scalar_n_vector_f(self) -> None:
+        fig = pwr_plot(k=5, n=15, f=[0.1, 0.2, 0.3, 0.4, 0.5])
+        assert isinstance(fig, self.go.Figure)
+        assert len(fig.data) == 1
+        assert list(fig.data[0].x) == [0.1, 0.2, 0.3, 0.4, 0.5]
+
+    def test_both_vectors(self) -> None:
+        fig = pwr_plot(k=5, n=[5, 10, 15], f=[0.2, 0.4, 0.6])
+        assert isinstance(fig, self.go.Figure)
+        assert len(fig.data) == 6
+
+    def test_both_vectors_trace_counts(self) -> None:
+        n_vals = [5, 10]
+        f_vals = [0.2, 0.4, 0.6]
+        fig = pwr_plot(k=3, n=n_vals, f=f_vals)
+        by_n = [t for t in fig.data if t.legendgroup == "by_n"]
+        by_f = [t for t in fig.data if t.legendgroup == "by_f"]
+        assert len(by_n) == len(n_vals)
+        assert len(by_f) == len(f_vals)
+
+    def test_both_scalars_raises(self) -> None:
+        with pytest.raises(ValueError, match="At least one"):
+            pwr_plot(k=5, n=15, f=0.4)
+
+    def test_power_values_correct(self) -> None:
+        fig = pwr_plot(k=5, n=15, f=[0.4], alpha=0.05)
+        expected = pwr_1way(k=5, n=15, alpha=0.05, f=0.4, print_pretty=False)
+        assert fig.data[0].y[0] == pytest.approx(expected)
+
+    def test_custom_alpha(self) -> None:
+        fig_01 = pwr_plot(k=3, n=[10, 20], f=0.5, alpha=0.01)
+        fig_05 = pwr_plot(k=3, n=[10, 20], f=0.5, alpha=0.05)
+        assert fig_01.data[0].y[1] < fig_05.data[0].y[1]
 
 
 if __name__ == "__main__":
