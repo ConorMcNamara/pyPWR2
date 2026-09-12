@@ -1,5 +1,3 @@
-import warnings
-
 import pytest
 
 from pwr2.pwr import pwr_1way, pwr_2way, ss_1way, ss_2way
@@ -136,14 +134,58 @@ class TestInputValidation:
         [
             ({"a": 1, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": 0.4, "f_b": 0.3}, "a must be at least 2"),
             ({"a": 3, "b": 1, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": 0.4, "f_b": 0.3}, "b must be at least 2"),
-            ({"a": 3, "b": 3, "alpha": 0.05, "size_a": 1, "size_b": 5, "f_a": 0.4, "f_b": 0.3}, "size_a must be at least 2"),
-            ({"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 1, "f_a": 0.4, "f_b": 0.3}, "size_b must be at least 2"),
-            ({"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": -0.1, "f_b": 0.3}, "f_a must be positive"),
-            ({"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": 0.4, "f_b": -0.1}, "f_b must be positive"),
-            ({"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": None, "f_b": 0.3, "delta_a": None}, "delta_a is required"),
-            ({"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": None, "f_b": 0.3, "delta_a": 1, "sigma_a": -1}, "sigma_a must be positive"),
-            ({"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": 0.4, "f_b": None, "delta_b": None}, "delta_b is required"),
-            ({"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": 0.4, "f_b": None, "delta_b": 1, "sigma_b": -1}, "sigma_b must be positive"),
+            (
+                {"a": 3, "b": 3, "alpha": 0.05, "size_a": 1, "size_b": 5, "f_a": 0.4, "f_b": 0.3},
+                "size_a must be at least 2",
+            ),
+            (
+                {"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 1, "f_a": 0.4, "f_b": 0.3},
+                "size_b must be at least 2",
+            ),
+            (
+                {"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": -0.1, "f_b": 0.3},
+                "f_a must be positive",
+            ),
+            (
+                {"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": 0.4, "f_b": -0.1},
+                "f_b must be positive",
+            ),
+            (
+                {"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": None, "f_b": 0.3, "delta_a": None},
+                "delta_a is required",
+            ),
+            (
+                {
+                    "a": 3,
+                    "b": 3,
+                    "alpha": 0.05,
+                    "size_a": 5,
+                    "size_b": 5,
+                    "f_a": None,
+                    "f_b": 0.3,
+                    "delta_a": 1,
+                    "sigma_a": -1,
+                },
+                "sigma_a must be positive",
+            ),
+            (
+                {"a": 3, "b": 3, "alpha": 0.05, "size_a": 5, "size_b": 5, "f_a": 0.4, "f_b": None, "delta_b": None},
+                "delta_b is required",
+            ),
+            (
+                {
+                    "a": 3,
+                    "b": 3,
+                    "alpha": 0.05,
+                    "size_a": 5,
+                    "size_b": 5,
+                    "f_a": 0.4,
+                    "f_b": None,
+                    "delta_b": 1,
+                    "sigma_b": -1,
+                },
+                "sigma_b must be positive",
+            ),
         ],
     )
     def test_pwr2way_validation(self, kwargs, match) -> None:
