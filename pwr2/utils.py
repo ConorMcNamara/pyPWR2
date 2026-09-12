@@ -24,7 +24,7 @@ def _pwr_fA(
     return float(power)
 
 
-def _pwr_fb(
+def _pwr_fB(
     a: int,
     b: int,
     alpha: float,
@@ -42,7 +42,7 @@ def _pwr_fb(
     return float(power)
 
 
-def _ss_fa(
+def _ss_fA(
     a: int,
     b: int,
     alpha: float,
@@ -54,23 +54,24 @@ def _ss_fa(
 ) -> int:
     if f_a is None:
         f_a = sqrt(((1 / a) * pow(delta_a / 2, 2) * 2) / pow(sigma_a, 2))
-    power = []
-    for i in range(1, B + 1):
-        n_i = i + 1
-        N = n_i * a * b
+    lo, hi = 2, B + 1
+    N_hi = hi * a * b
+    q_hi = f_dist.isf(alpha, a - 1, N_hi - a - b + 1)
+    if ncf.sf(q_hi, a - 1, N_hi - a - b + 1, N_hi * pow(f_a, 2)) < 1 - beta:
+        raise ValueError(f"Target power not achieved within B={B} iterations (max n={B + 1}). Increase B.")
+    while lo < hi:
+        mid = (lo + hi) // 2
+        N = mid * a * b
         lamda = N * pow(f_a, 2)
         q = f_dist.isf(alpha, a - 1, N - a - b + 1)
-        pwr = ncf.sf(q, a - 1, N - a - b + 1, lamda)
-        power.append(pwr)
-        if power[i - 1] >= 1 - beta:
-            break
-    else:
-        raise ValueError(f"Target power not achieved within B={B} iterations (max n={B + 1}). Increase B.")
-    ss = len(power) + 1
-    return ss
+        if ncf.sf(q, a - 1, N - a - b + 1, lamda) >= 1 - beta:
+            hi = mid
+        else:
+            lo = mid + 1
+    return lo
 
 
-def _ss_fb(
+def _ss_fB(
     a: int,
     b: int,
     alpha: float,
@@ -82,17 +83,18 @@ def _ss_fb(
 ) -> int:
     if f_b is None:
         f_b = sqrt(((1 / b) * pow(delta_b / 2, 2) * 2) / pow(sigma_b, 2))
-    power = []
-    for i in range(1, B + 1):
-        n_i = i + 1
-        N = n_i * a * b
+    lo, hi = 2, B + 1
+    N_hi = hi * a * b
+    q_hi = f_dist.isf(alpha, b - 1, N_hi - a - b + 1)
+    if ncf.sf(q_hi, b - 1, N_hi - a - b + 1, N_hi * pow(f_b, 2)) < 1 - beta:
+        raise ValueError(f"Target power not achieved within B={B} iterations (max n={B + 1}). Increase B.")
+    while lo < hi:
+        mid = (lo + hi) // 2
+        N = mid * a * b
         lamda = N * pow(f_b, 2)
         q = f_dist.isf(alpha, b - 1, N - a - b + 1)
-        pwr = ncf.sf(q, b - 1, N - a - b + 1, lamda)
-        power.append(pwr)
-        if power[i - 1] >= 1 - beta:
-            break
-    else:
-        raise ValueError(f"Target power not achieved within B={B} iterations (max n={B + 1}). Increase B.")
-    ss = len(power) + 1
-    return ss
+        if ncf.sf(q, b - 1, N - a - b + 1, lamda) >= 1 - beta:
+            hi = mid
+        else:
+            lo = mid + 1
+    return lo
