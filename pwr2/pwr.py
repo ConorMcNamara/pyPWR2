@@ -1,6 +1,7 @@
 """Power and sample size calculations for one- and two-way ANOVA models."""
 
 import warnings
+from collections.abc import Sequence
 from math import pow, sqrt
 
 from scipy.stats import f as f_dist
@@ -407,3 +408,112 @@ def ss_2way(
         )
         print(str_print)
     return ss
+
+
+def pwr_plot(
+    k: int,
+    n: int | Sequence[int],
+    f: float | Sequence[float],
+    alpha: float = 0.05,
+) -> object:
+    """Plot power curves for one-way balanced ANOVA.
+
+    Attempt to faithfully port R's ``pwr.plot`` from the pwr2 package,
+    with a bug fix: R hardcodes ``alpha = 0.05`` in two of its three
+    branches; this implementation uses the caller-supplied ``alpha``
+    throughout.
+
+    At least one of ``n`` or ``f`` must be a sequence. The three modes
+    are:
+
+    * Scalar ``f``, sequence ``n`` -- power vs sample size.
+    * Scalar ``n``, sequence ``f`` -- power vs effect size.
+    * Both sequences -- two subplots (power vs effect size by sample
+      size, and power vs sample size by effect size).
+
+    Parameters
+    ----------
+    k : int
+        Number of groups.
+    n : int or sequence of int
+        Sample size(s) per group.
+    f : float or sequence of float
+        Cohen's effect size(s).
+    alpha : float, default=0.05
+        Significance level (Type I error probability).
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+
+    Raises
+    ------
+    ImportError
+        If plotly is not installed.
+    ValueError
+        If both ``n`` and ``f`` are scalars.
+    """
+    try:
+        import plotly.graph_objects as go  # type: ignore[import-untyped]
+        from plotly.subplots import make_subplots  # type: ignore[import-untyped]
+    except ImportError as err:
+        raise ImportError("plotly is required for pwr_plot. Install with: pip install pypwr2[plot]") from err
+
+    def _power(n_val: int, f_val: float) -> float:
+        lamda = n_val * k * pow(f_val, 2)
+        q = f_dist.isf(alpha, k - 1, (n_val - 1) * k)
+        return float(ncf.sf(q, k - 1, (n_val - 1) * k, lamda))
+
+    if isinstance(f, Sequence) and not isinstance(n, Sequence):
+        f_vals = list(f)
+        powers = [_power(n, fi) for fi in f_vals]
+        fig = go.Figure()  # type: ignore[attr-defined]
+        fig.add_trace(go.Scatter(x=f_vals, y=powers, mode="lines", line={"color": "red", "width": 2}))  # type: ignore[attr-defined]
+        fig.update_layout(
+            title=f"Power curve for one-way ANOVA (k={k}, n={n}, alpha={alpha})",
+            xaxis_title="Effect size (f)",
+            yaxis_title="Power",
+        )
+        return fig
+
+    if isinstance(n, Sequence) and not isinstance(f, Sequence):
+        n_vals = list(n)
+        powers = [_power(ni, f) for ni in n_vals]
+        fig = go.Figure()  # type: ignore[attr-defined]
+        fig.add_trace(go.Scatter(x=n_vals, y=powers, mode="lines", line={"color": "red", "width": 2}))  # type: ignore[attr-defined]
+        fig.update_layout(
+            title=f"Power curve for one-way ANOVA (k={k}, f={f}, alpha={alpha})",
+            xaxis_title="Sample size per group (n)",
+            yaxis_title="Power",
+        )
+        return fig
+
+    if isinstance(n, Sequence) and isinstance(f, Sequence):
+        n_vals = list(n)
+        f_vals = list(f)
+        fig = make_subplots(rows=1, cols=2, subplot_titles=("Power vs Effect Size", "Power vs Sample Size"))
+
+        for ni in n_vals:
+            powers = [_power(ni, fi) for fi in f_vals]
+            fig.add_trace(
+                go.Scatter(x=f_vals, y=powers, mode="lines", name=f"n={ni}", legendgroup="by_n"),  # type: ignore[attr-defined]
+                row=1,
+                col=1,
+            )
+
+        for fi in f_vals:
+            powers = [_power(ni, fi) for ni in n_vals]
+            fig.add_trace(
+                go.Scatter(x=n_vals, y=powers, mode="lines", name=f"f={fi}", legendgroup="by_f"),  # type: ignore[attr-defined]
+                row=1,
+                col=2,
+            )
+
+        fig.update_xaxes(title_text="Effect size (f)", row=1, col=1)
+        fig.update_xaxes(title_text="Sample size per group (n)", row=1, col=2)
+        fig.update_yaxes(title_text="Power", row=1, col=1)
+        fig.update_yaxes(title_text="Power", row=1, col=2)
+        fig.update_layout(title=f"Power curves for one-way ANOVA (k={k}, alpha={alpha})")
+        return fig
+
+    raise ValueError("At least one of n or f must be a sequence to plot a power curve.")
